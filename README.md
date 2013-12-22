@@ -1,15 +1,25 @@
 django-boot-template
 ====================
 
-Just a template that I use when booting new django projects.
+Just a template that I use when booting new django projects (for now only works in Python 2.7).
 
 
 Usage
 =====
 
+You can build it directly:
+
 .. code-block:: console
 
-    django-admin.py startproject --template=url
+    django-admin.py startproject --template=https://github.com/arthuralvim/django-boot-template/archive/master.zip --extension=py,env,gitignore --name=Procfile,Makefile PROJECTNAME
+    python bootstrap.py
+    python boot-project.py
+
+or you can download it and pass the template path:
+
+.. code-block:: console
+    git clone git@github.com:arthuralvim/django-boot-template.git
+    django-admin.py startproject --template=path/to/django-boot-template --extension=py,env,gitignore --name=Procfile,Makefile PROJECTNAME
     python bootstrap.py
     python boot-project.py
 

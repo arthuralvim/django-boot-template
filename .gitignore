@@ -1,5 +1,13 @@
-*~
 *.db
+*.log
+*.pid
 *.pyc
+*.sck
+*~
 .DS_Store
+.vagrant
 local-requirements.txt
+{{ project_name }}/media/*
+!{{ project_name }}/media/media.empty
+{{ project_name }}/static/*
+!{{ project_name }}/static/static.empty
