@@ -23,12 +23,10 @@ path.insert(0, BASE_DIR.child('apps'))
 # See https://docs.djangoproject.com/en/{{ docs_version }}/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '{{ secret_key }}'
-# SECRET_KEY = config('SECRET_KEY')
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-# DEBUG = config('DEBUG', default=False, cast=bool)
+DEBUG = config('DEBUG', default=False, cast=bool)
 
 TEMPLATE_DEBUG = DEBUG
 
@@ -129,13 +127,12 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
 # Email
 
-SEND_EMAIL = False
-USE_CONSOLE = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_USER = 'user@gmail.com.br'
-EMAIL_PASSWORD = 'pass'
-EMAIL_PORT = 587
-EMAIL_TLS = True
+SEND_EMAIL = config('SEND_EMAIL')
+EMAIL_HOST = config('EMAIL_HOST')
+EMAIL_USER = config('EMAIL_USER')
+EMAIL_PASSWORD = config('EMAIL_PASSWORD')
+EMAIL_PORT = config('EMAIL_PORT')
+EMAIL_TLS = config('EMAIL_TLS')
 
 if SEND_EMAIL:
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -147,10 +144,7 @@ if SEND_EMAIL:
     SERVER_EMAIL = EMAIL_HOST_USER
     DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 else:
-    if USE_CONSOLE:
-        EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-    else:
-        EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # ALL OTHER KEYS
 from keys import *
