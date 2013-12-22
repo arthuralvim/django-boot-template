@@ -16,7 +16,7 @@ SETTINGS_STAGE={{ project_name }}.settings.stage
 SETTINGS_TEST={{ project_name }}.settings.test
 
 # These targets are not files
-.PHONY: all dev prod stage test requirements requirements.update createsuperuser shell clean clean.django pep8 compile help runserver server gunicorn uwsgi translate.br makemessages compilemessages db db.fresh db.clear migrate migration.initial migration fixtures.dump fixtures.load provision deploy static tests coverage heroku heroku.remote heroku.foreman heroku.create heroku.static heroku.migrate heroku.push heroku.deploy open vm check.venv check.app check.file check.settings check.super check.branch
+.PHONY: all dev prod stage test requirements requirements.update createsuperuser shell clean clean.django pep8 compile help runserver server gunicorn uwsgi translate.br makemessages compilemessages db db.fresh db.clear migrate migration.initial migration fixtures.dump fixtures.load provision deploy static tests coverage heroku heroku.remote heroku.foreman heroku.create heroku.static heroku.migrate heroku.push heroku.deploy open vm check.venv check.app check.file check.settings check.user check.email check.branch
 
 all: help
 
@@ -35,8 +35,10 @@ check.settings:
 check.branch:
 	@if test "$(BRANCH)" = "" ; then echo "BRANCH is undefined"; exit 1; fi
 
-check.super:
+check.user:
 	@if test "$(USER)" = "" ; then echo "USER is undefined"; exit 1; fi
+
+check.email:
 	@if test "$(EMAIL)" = "" ; then echo "EMAIL is undefined"; exit 1; fi
 
 # SETTINGS FILES
@@ -63,7 +65,7 @@ requirements:
 requirements.update:
 	$(PIP) install -U -r requirements.txt
 
-createsuperuser: check.super check.settings
+createsuperuser: check.user check.email check.settings
 	$(MANAGE_PY) createsuperuser --username=$(USER) --email=$(EMAIL) --settings=$(SETTINGS)
 
 shell: check.settings
