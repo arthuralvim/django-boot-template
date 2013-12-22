@@ -6,7 +6,8 @@
 *~
 .DS_Store
 .vagrant
-local-requirements.txt
+.env
+requirements.local.txt
 {{ project_name }}/media/*
 !{{ project_name }}/media/media.empty
 {{ project_name }}/static/*
