@@ -2,7 +2,7 @@
 
 DJADMIN_PY=$(VIRTUAL_ENV)/bin/django-admin.py
 FABRIC=$(VIRTUAL_ENV)/bin/fab
-GUNICORN=$(VIRTUAL_ENV)/bin/gunicorn_django
+GUNICORN=$(VIRTUAL_ENV)/bin/gunicorn
 MANAGE_PY=$(VIRTUAL_ENV)/bin/python manage.py
 PIP=$(VIRTUAL_ENV)/bin/pip
 PROVY=$(VIRTUAL_ENV)/bin/provy
@@ -96,7 +96,7 @@ server: check.settings
 	@$(MANAGE_PY) runserver 0.0.0.0:8000 --settings=$(SETTINGS)
 
 gunicorn: check.settings
-	@$(GUNICORN) -C deploy/gunicorn.conf.py -b 127.0.0.1:8000 --settings=$(SETTINGS)
+	@$(GUNICORN) {{ project_name }}.wsgi -w 4 -b 127.0.0.1:8000 --settings=$(SETTINGS)
 
 uwsgi:
 	@uwsgi -p 4 -s 127.0.0.1:8000 --ini deploy/uwsgi.ini
