@@ -4,9 +4,12 @@
 *.pyc
 *.sck
 *~
+.coverage
 .DS_Store
-.vagrant
 .env
+.noseids
+.vagrant
+{{ project_name }}/cover/*
 requirements.local.txt
 {{ project_name }}/media/*
 !{{ project_name }}/media/media.empty
