@@ -96,7 +96,7 @@ server: check.settings
 	@$(MANAGE_PY) runserver 0.0.0.0:8000 --settings=$(SETTINGS)
 
 gunicorn: check.settings
-	@$(GUNICORN) -C deploy/gunicorn.conf.py -b 127.0.0.1:8000 --settings=$(SETTINGS)
+	@$(GUNICORN) {{ project_name }}.wsgi -C deploy/gunicorn.conf.py --settings=$(SETTINGS)
 
 uwsgi:
 	@uwsgi -p 4 -s 127.0.0.1:8000 --ini deploy/uwsgi.ini
