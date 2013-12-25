@@ -103,9 +103,9 @@ LOCALE_PATHS = (BASE_DIR.child('locale'), )
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/{{ docs_version }}/howto/static-files/
-STATIC_ROOT = BASE_DIR.child('static')
+STATIC_ROOT = BASE_DIR.child('staticfiles')
 STATIC_URL = '/static/'
-STATICFILES_DIRS = (BASE_DIR.child('assets'), )
+STATICFILES_DIRS = (BASE_DIR.child('static'), )
 
 # Media files
 MEDIA_ROOT = (BASE_DIR.child('media'), )

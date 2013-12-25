@@ -3,6 +3,8 @@
 *.pid
 *.pyc
 *.sck
+*.sqlite3
+*.TODO
 *~
 .coverage
 .DS_Store
@@ -13,5 +15,5 @@
 requirements.local.txt
 {{ project_name }}/media/*
 !{{ project_name }}/media/media.empty
-{{ project_name }}/static/*
-!{{ project_name }}/static/static.empty
+{{ project_name }}/staticfiles/*
+!{{ project_name }}/staticfiles/static.empty

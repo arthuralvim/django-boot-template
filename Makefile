@@ -186,16 +186,16 @@ heroku.remote:
 	# git remote add heroku git@heroku.com:{{ project_name }}.git
 
 heroku.static:
-	@heroku run python manage.py collectstatic --clear --noinput
+	@heroku run python manage.py collectstatic --clear --noinput --settings=$(SETTINGS_PROD)
 
 heroku.migrate:
-	@heroku run python manage.py syncdb --noinput
-	@heroku run python manage.py migrate
+	@heroku run python manage.py syncdb --noinput --settings=$(SETTINGS_PROD)
+	@heroku run python manage.py migrate --settings=$(SETTINGS_PROD)
 
 heroku.push: check.branch
 	@git push heroku $(BRANCH):master
 
-heroku.deploy: heroku.push heroku.migrate heroku.static
+heroku.deploy: heroku.push heroku.migrate
 
 open:
 	@heroku open
