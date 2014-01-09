@@ -4,7 +4,8 @@
 *.pyc
 *.sck
 *.sqlite3
-*.TODO
+*.todo
+*.md
 *~
 .coverage
 .DS_Store

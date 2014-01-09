@@ -9,14 +9,14 @@ Usage
 
 You can build it directly:
 
-    django-admin.py startproject --template=https://github.com/arthuralvim/django-boot-template/archive/master.zip --extension=py,env,gitignore --name=Procfile,Makefile PROJECTNAME
+    django-admin.py startproject --template=https://github.com/arthuralvim/django-boot-template/archive/master.zip --extension=py,html,env,gitignore,sublime-project --name=Procfile,Makefile PROJECTNAME
     python bootstrap.py
     python boot-project.py
 
 or you can download it and pass the template path:
 
     git clone git@github.com:arthuralvim/django-boot-template.git
-    django-admin.py startproject --template=path/to/django-boot-template --extension=py,env,gitignore --name=Procfile,Makefile PROJECTNAME
+    django-admin.py startproject --template=path/to/django-boot-template --extension=py,html,env,gitignore,sublime-project --name=Procfile,Makefile PROJECTNAME
     python bootstrap.py
     python boot-project.py
 

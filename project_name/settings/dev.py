@@ -1,7 +1,9 @@
 from prod import *
 
 DEBUG = True
+DEBUG_TEMPLATE = True
 DEBUG_TOOLBAR = True
+ALLOWED_HOSTS = ['*', ]
 
 if DEBUG_TOOLBAR:
 

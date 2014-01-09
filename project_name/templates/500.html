@@ -1,0 +1,8 @@
+{% templatetag openblock %} extends "error.html" {% templatetag closeblock %}
+
+{% templatetag openblock %} block title {% templatetag closeblock %} Internal Server Error {% templatetag openblock %} endblock title {% templatetag closeblock %}
+
+{% templatetag openblock %} block content {% templatetag closeblock %}
+    <h1>Error 500 - Internal Server Error</h1>
+    <div id="redirect-message">You'll be redirected to index page in <span id="redirect-seconds">10</span> seconds.</div>
+{% templatetag openblock %} endblock content {% templatetag closeblock %}

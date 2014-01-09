@@ -1,0 +1,43 @@
+{% templatetag openblock %} extends "base.html" {% templatetag closeblock %}
+
+
+{% templatetag openblock %} block styles {% templatetag closeblock %}
+<style>
+    #redirect-message {
+        display: none;
+        font-size: .8em;
+    }
+    #redirect-message > span {
+        color: #ffc40d;
+    }
+</style>
+{% templatetag openvariable %} block.super {% templatetag closevariable %}
+{% templatetag openblock %} endblock styles {% templatetag closeblock %}
+
+{% templatetag openblock %} block scripts {% templatetag closeblock %}
+<script>
+    var page = {
+        index_url: '/',
+        seconds: 11,
+        redirect_message: document.getElementById('redirect-message'),
+        redirect_seconds: document.getElementById('redirect-seconds'),
+        dec_seconds: function() {
+            page.seconds-=1;
+            page.redirect_seconds.innerHTML=page.seconds;
+            if(page.seconds>0) {
+                setTimeout(page.dec_seconds, 1000);
+            } else {
+                window.location.href=page.index_url;
+            }
+        },
+        init: function() {
+            if(window.location.pathname!=page.index_url) {
+                page.redirect_message.style.display='block';
+                page.dec_seconds();
+            }
+        }
+    };
+    page.init();
+</script>
+{% templatetag openvariable %} block.super {% templatetag closevariable %}
+{% templatetag openblock %} endblock scripts {% templatetag closeblock %}

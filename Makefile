@@ -15,7 +15,7 @@ SETTINGS_STAGE={{ project_name }}.settings.stage
 SETTINGS_TEST={{ project_name }}.settings.test
 
 # These targets are not files
-.PHONY: all dev prod stage test boot requirements requirements.update createsuperuser shell clean clean.django pep8 compile help runserver server gunicorn uwsgi translate.br makemessages compilemessages db db.delete.sqlite3 db.fresh db.clear migrate migration.initial migration fixtures.dump fixtures.load provision deploy static tests heroku.remote heroku.create heroku.delete heroku.static heroku.migrate heroku.push heroku.deploy open vm check.venv check.app check.file check.settings check.user check.email check.branch
+.PHONY: all dev prod stage test boot requirements requirements.update createsuperuser shell clean clean.django pep8 compile help runserver server gunicorn uwsgi translate.br makemessages compilemessages db db.delete.sqlite3 db.fresh db.clear migrate migration.initial migrate.fake migrate.app migration.convert migration.data migration fixtures.dump fixtures.load provision deploy static tests heroku.remote heroku.create heroku.delete heroku.static heroku.migrate heroku.push heroku.deploy heroku.db.reset open vm check.venv check.app check.file check.settings check.user check.email check.branch
 
 all: help
 
@@ -76,7 +76,7 @@ clean:
 	@find . -name '*~' -exec rm -f {} \;
 
 pep8:
-	@pep8.py --filename=*.py --ignore=W --exclude="manage.py,settings.py,migrations" --statistics --repeat {{ project_name }}
+	@pep8 --filename="*.py" --ignore=W --exclude="manage.py,settings.py,migrations" --first --show-source --statistics --count {{ project_name }}
 
 compile:
 	@$(PY) -m compileall {{ project_name }}
@@ -132,8 +132,20 @@ db.clear: check.app check.settings
 migrate: check.settings
 	@$(MANAGE_PY) migrate --settings=$(SETTINGS)
 
+migrate.fake: check.settings
+	@$(MANAGE_PY) migrate --fake --settings=$(SETTINGS)
+
+migrate.app: check.app check.settings
+	@$(MANAGE_PY) migrate $(APP)  --settings=$(SETTINGS)
+
 migration.initial: check.app check.settings
 	@$(MANAGE_PY) schemamigration $(APP) --initial  --settings=$(SETTINGS)
+
+migration.convert: check.app check.settings
+	@$(MANAGE_PY) convert_to_south $(APP)  --settings=$(SETTINGS)
+
+migration.data: check.app check.settings
+	@$(MANAGE_PY) datamigration $(APP)  --settings=$(SETTINGS)
 
 migration: check.app check.settings
 	@$(MANAGE_PY) schemamigration $(APP) --auto --settings=$(SETTINGS)
@@ -184,6 +196,9 @@ heroku.delete:
 heroku.remote:
 	@heroku git:remote -a {{ project_name }}
 	# git remote add heroku git@heroku.com:{{ project_name }}.git
+
+heroku.db.reset:
+	@heroku heroku pg:reset DATABASE_URL
 
 heroku.static:
 	@heroku run python manage.py collectstatic --clear --noinput --settings=$(SETTINGS_PROD)

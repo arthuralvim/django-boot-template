@@ -4,7 +4,7 @@ INSTALLED_APPS += (
     'django_nose',
 )
 
-SOUTH_TEST_MIGRATE=False
+SOUTH_TEST_MIGRATE = False
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
