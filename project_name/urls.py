@@ -13,7 +13,7 @@ handler500 = '{{ project_name }}.errors.server_error'
 urlpatterns = patterns('',
     # Examples:
     # url(r'^$', '{{ project_name }}.views.home', name='home'),
-    # url(r'^blog/', include('blog.urls')),
+    # url(r'^pattern/', include('app.urls', namespace='some_name')),
 
     url(r'^admin/', include(admin.site.urls)),
 )
