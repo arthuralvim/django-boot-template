@@ -15,7 +15,7 @@ SETTINGS_STAGE={{ project_name }}.settings.stage
 SETTINGS_TEST={{ project_name }}.settings.test
 
 # These targets are not files
-.PHONY: all dev prod stage test boot requirements requirements.update createsuperuser shell clean clean.django pep8 compile help runserver server gunicorn uwsgi translate.br makemessages compilemessages db db.delete.sqlite3 db.fresh db.clear migrate migration.initial migrate.fake migrate.app migration.convert migration.data migration fixtures.dump fixtures.load provision deploy static tests heroku.remote heroku.create heroku.delete heroku.static heroku.migrate heroku.push heroku.deploy heroku.db.reset open vm check.venv check.app check.file check.settings check.user check.email check.branch
+.PHONY: all dev prod stage test boot requirements requirements.update createsuperuser shell clean clean.django pep8 compile help runserver server gunicorn uwsgi translate.br makemessages compilemessages db db.delete.sqlite3 db.fresh db.clear migrate migration.initial migrate.fake migrate.app migration.convert migration.data migration fixtures.dump fixtures.load provision deploy static tests coverage heroku.remote heroku.create heroku.delete heroku.static heroku.migrate heroku.push heroku.deploy heroku.db.reset open vm check.venv check.app check.file check.settings check.user check.email check.branch
 
 all: help
 
@@ -182,6 +182,9 @@ static: check.settings
 
 tests:
 	@$(MANAGE_PY) test --settings=$(SETTINGS_TEST)
+
+coverage:
+	@$(MANAGE_PY) test_coverage --settings=$(SETTINGS_DEV)
 
 # ---
 

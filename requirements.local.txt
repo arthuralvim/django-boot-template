@@ -1,6 +1,7 @@
 -r requirements.txt
 coverage==3.7.1
 django-debug-toolbar==1.0
+django-coverage==1.2.4
 django-nose==1.2
 rednose==0.4.1
 ipdb==0.8
