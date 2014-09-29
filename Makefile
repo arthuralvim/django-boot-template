@@ -184,7 +184,7 @@ tests:
 	@$(MANAGE_PY) test --settings=$(SETTINGS_TEST)
 
 coverage:
-	@$(MANAGE_PY) test_coverage --settings=$(SETTINGS_DEV)
+    @$(MANAGE_PY) test_coverage --settings=$(SETTINGS_TEST)
 
 # ---
 
