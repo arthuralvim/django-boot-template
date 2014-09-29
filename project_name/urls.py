@@ -1,7 +1,7 @@
 from django.conf.urls import patterns
 from django.conf.urls import include
 from django.conf.urls import url
-
+from django.conf import settings
 from django.contrib import admin
 admin.autodiscover()
 
@@ -17,3 +17,14 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
 )
+
+
+
+if settings.DEBUG:
+    from django.views.generic import TemplateView
+
+    urlpatterns += patterns('',
+        (r'^403/$', TemplateView.as_view(template_name="403.html")),
+        (r'^404/$', TemplateView.as_view(template_name="404.html")),
+        (r'^500/$', TemplateView.as_view(template_name="500.html")),
+    )
