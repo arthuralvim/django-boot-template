@@ -22,9 +22,16 @@ urlpatterns = patterns('',
 
 if settings.DEBUG:
     from django.views.generic import TemplateView
+    from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+    from django.conf.urls.static import static
 
     urlpatterns += patterns('',
         (r'^403/$', TemplateView.as_view(template_name="403.html")),
         (r'^404/$', TemplateView.as_view(template_name="404.html")),
         (r'^500/$', TemplateView.as_view(template_name="500.html")),
     )
+
+    urlpatterns += staticfiles_urlpatterns()
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)
+
