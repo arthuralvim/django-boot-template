@@ -131,7 +131,7 @@ SEND_EMAIL = config('SEND_EMAIL')
 EMAIL_HOST = config('EMAIL_HOST')
 EMAIL_USER = config('EMAIL_USER')
 EMAIL_PASSWORD = config('EMAIL_PASSWORD')
-EMAIL_PORT = config('EMAIL_PORT')
+EMAIL_PORT = config('EMAIL_PORT', cast=int)
 EMAIL_TLS = config('EMAIL_TLS')
 
 if SEND_EMAIL:
