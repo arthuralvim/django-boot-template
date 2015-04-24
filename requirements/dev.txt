@@ -1,0 +1,5 @@
+-r heroku.txt
+-r base.txt
+django-bootstrap3==5.4.0
+django-localflavor-br==1.0
+django-taggit==0.13.0
