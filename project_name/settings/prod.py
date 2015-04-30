@@ -33,9 +33,7 @@ TEMPLATE_DEBUG = DEBUG
 PROJECT_NAME = '{{ project_name }}'
 ALLOWED_HOSTS = ['.{{ project_name }}.com.br', ]
 
-ADMINS = (
-    ('admin', 'other@admin.com'),
-)
+ADMINS = ()
 
 
 # Application definition
@@ -55,7 +53,6 @@ LOCAL_APPS = (
 
 THIRD_PARTY_APPS = (
     'gunicorn',
-    'south',
 )
 
 INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS + THIRD_PARTY_APPS
@@ -104,26 +101,37 @@ LOCALE_PATHS = (BASE_DIR.child('locale'), )
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/{{ docs_version }}/howto/static-files/
 STATIC_ROOT = config('STATIC_ROOT', default=BASE_DIR.child('staticfiles'))
-STATIC_URL = '/static/'
+STATIC_URL = config('STATIC_URL', default='/static/')
 STATICFILES_DIRS = (BASE_DIR.child('static'), )
 
 # Media files
 MEDIA_ROOT = config('MEDIA_ROOT', default=BASE_DIR.child('media'))
-MEDIA_URL = '/media/'
+MEDIA_URL = config('MEDIA_URL', default='/media/')
 
-# Template files
-TEMPLATE_DIRS = (BASE_DIR.child('templates'), )
 
-TEMPLATE_CONTEXT_PROCESSORS = (
-    'django.contrib.auth.context_processors.auth',
-    'django.core.context_processors.debug',
-    'django.core.context_processors.i18n',
-    'django.core.context_processors.media',
-    'django.core.context_processors.static',
-    'django.core.context_processors.tz',
-    'django.core.context_processors.request',
-    'django.contrib.messages.context_processors.messages',
-)
+# TEMPLATE
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
+            BASE_DIR.child('templates'),
+        ],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.debug',
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
+                'django.template.context_processors.tz',
+                'django.contrib.messages.context_processors.messages',
+                'django.core.context_processors.request',
+            ],
+        },
+    },
+]
 
 # Email
 
