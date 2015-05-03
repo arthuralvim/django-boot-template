@@ -14,6 +14,5 @@ BOWER_INSTALLED_APPS = (
     'font-awesome#4.3.0',
     'handlebars#3.0.0',
     'jquery#2.1.1',
-    'mustache#0.8.2',
     'selectize#0.12.1',
 )

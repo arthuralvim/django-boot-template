@@ -84,15 +84,8 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     # 'djangobower.finders.BowerFinder',
-    # 'pipeline.finders.FileSystemFinder',
-    # 'pipeline.finders.AppDirectoriesFinder',
-    # 'pipeline.finders.CachedFileFinder',
     # 'pipeline.finders.PipelineFinder',
 )
-
-# from .bower import *  # noqa
-
-# from .pipeline import *  # noqa
 
 # CACHE
 
@@ -164,6 +157,14 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # SENTRY
 
 from .sentry import *  # noqa
+
+# BOWER
+
+# from .bower import *  # noqa
+
+# PIPELINE
+
+# from .pipelines import *  # noqa
 
 # DJANGO REST FRAMEWORK
 
