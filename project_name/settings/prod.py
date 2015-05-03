@@ -1,11 +1,7 @@
+# -*- coding: utf-8 -*-
+
 """
 Django settings for {{ project_name }} project.
-
-For more information on this file, see
-https://docs.djangoproject.com/en/{{ docs_version }}/topics/settings/
-
-For the full list of settings and their values, see
-https://docs.djangoproject.com/en/{{ docs_version }}/ref/settings/
 """
 
 from decouple import config
@@ -15,80 +11,50 @@ from sys import path
 from unipath import Path
 
 BASE_DIR = Path(__file__).absolute().ancestor(2)
+path.insert(0, BASE_DIR.child('apps'))  # insert path to apps
 
-# insert path to apps
-path.insert(0, BASE_DIR.child('apps'))
+PROJECT_NAME = '{{ project_name }}'
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/{{ docs_version }}/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config('SECRET_KEY')
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
 
 TEMPLATE_DEBUG = DEBUG
 
-PROJECT_NAME = '{{ project_name }}'
-ALLOWED_HOSTS = ['.{{ project_name }}.com.br', ]
+ALLOWED_HOSTS = ['.{{ project_name }}.com', ]
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 ADMINS = ()
 
+# APPS
 
-# Application definition
+from .apps import *  # noqa
 
-DJANGO_APPS = (
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-)
-
-LOCAL_APPS = (
-    'example',
-)
-
-THIRD_PARTY_APPS = (
-    'gunicorn',
-)
-
-INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS + THIRD_PARTY_APPS
-
-MIDDLEWARE_CLASSES = (
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-)
+# URLCONF
 
 ROOT_URLCONF = '{{ project_name }}.urls'
 
 WSGI_APPLICATION = '{{ project_name }}.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/{{ docs_version }}/ref/settings/#databases
+# DATABASE
 
 DATABASES = {
     'default': config(
         'DATABASE_URL',
-        default='sqlite:///{0}/{1}'.format(BASE_DIR.child('db'), '{{ project_name }}.sqlite3'),
+        default='sqlite:///{0}/{1}'.format(BASE_DIR.child('db'), '{{ project_name }}.sqlite3'),  # noqa
         cast=db_url),
 }
 
 FIXTURE_DIRS = (join(BASE_DIR.child('db'), 'fixtures'), )
 
-# Internationalization
-# https://docs.djangoproject.com/en/{{ docs_version }}/topics/i18n/
+# INTERNATIONALIZATION
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = config('LANGUAGE_CODE', default='pt-br')
 
-TIME_ZONE = 'America/Recife'
+LOCALE_PATHS = (BASE_DIR.child('locale'), )
+
+TIME_ZONE = config('TIME_ZONE', default='America/Recife')
 
 USE_I18N = True
 
@@ -96,18 +62,47 @@ USE_L10N = True
 
 USE_TZ = True
 
-LOCALE_PATHS = (BASE_DIR.child('locale'), )
+DATE_FORMAT = 'd/m/Y'
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/{{ docs_version }}/howto/static-files/
+DATETIME_FORMAT = 'd-m-Y H:i:S'
+
+DECIMAL_SEPARATOR = ','
+
+THOUSAND_SEPARATOR = '.'
+
+
+# STATIC
+
 STATIC_ROOT = config('STATIC_ROOT', default=BASE_DIR.child('staticfiles'))
+
 STATIC_URL = config('STATIC_URL', default='/static/')
-STATICFILES_DIRS = (BASE_DIR.child('static'), )
 
-# Media files
+STATICFILES_DIRS = (config('STATICFILES_ROOT',
+                    default=BASE_DIR.child('static')), )
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    # 'djangobower.finders.BowerFinder',
+    # 'pipeline.finders.FileSystemFinder',
+    # 'pipeline.finders.AppDirectoriesFinder',
+    # 'pipeline.finders.CachedFileFinder',
+    # 'pipeline.finders.PipelineFinder',
+)
+
+# from .bower import *  # noqa
+
+# from .pipeline import *  # noqa
+
+# CACHE
+
+# from .cache import *  # noqa
+
+# MEDIA
+
 MEDIA_ROOT = config('MEDIA_ROOT', default=BASE_DIR.child('media'))
-MEDIA_URL = config('MEDIA_URL', default='/media/')
 
+MEDIA_URL = config('MEDIA_URL', default='/media/')
 
 # TEMPLATE
 
@@ -133,26 +128,55 @@ TEMPLATES = [
     },
 ]
 
-# Email
+# MIDDLEWARE
 
-SEND_EMAIL = config('SEND_EMAIL', cast=bool)
-EMAIL_HOST = config('EMAIL_HOST')
-EMAIL_USER = config('EMAIL_USER')
-EMAIL_PASSWORD = config('EMAIL_PASSWORD')
-EMAIL_PORT = config('EMAIL_PORT', cast=int)
-EMAIL_TLS = config('EMAIL_TLS')
+MIDDLEWARE_CLASSES = (
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+)
 
-if SEND_EMAIL:
-    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-    EMAIL_HOST = EMAIL_HOST
-    EMAIL_HOST_USER = EMAIL_USER
-    EMAIL_HOST_PASSWORD = EMAIL_PASSWORD
-    EMAIL_PORT = EMAIL_PORT
-    EMAIL_USE_TLS = EMAIL_TLS
-    SERVER_EMAIL = EMAIL_HOST_USER
-    DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
-else:
-    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# BACKENDS
 
-# ALL OTHER KEYS
-from keys import *
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+# AUTH
+
+# AUTH_USER_MODEL = 'app.UserModel'
+
+# LOGIN_URL = 'login_view'
+
+# LOGIN_REDIRECT_URL = 'login_redirect_view'
+
+# LOGOUT_URL = 'logout_view'
+
+# EMAIL
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# from .email import *  # noqa
+
+# SENTRY
+
+from .sentry import *  # noqa
+
+# DJANGO REST FRAMEWORK
+
+from .rest import *  # noqa
+
+# AWS S3
+
+from .s3 import *  # noqa
+
+# MANDRILL
+
+from .mandrill import *  # noqa
+
+# ELASTICSEARCH
+
+from .elasticsearch import *  # noqa

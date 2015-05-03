@@ -1,0 +1,9 @@
+{% templatetag openblock %} load bootstrap3 {% templatetag closeblock %}
+
+{% templatetag openblock %}  bootstrap_field field addon_before="R$" {% templatetag closeblock %}
+
+<script type="text/javascript">
+  $(function() {
+    $("#{{ id }}").attr("type", "text").mask("#.##0,00", {reverse: true});
+  });
+</script>

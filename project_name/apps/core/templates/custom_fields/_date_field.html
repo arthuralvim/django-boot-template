@@ -1,0 +1,12 @@
+{% templatetag openblock %} load bootstrap3 {% templatetag closeblock %}
+
+{% templatetag openblock %}  bootstrap_field field  {% templatetag closeblock %}
+
+<script type="text/javascript">
+  $(function() {
+    $("#{{ id }}").datepicker({
+      format: "dd/mm/yyyy",
+      language: "pt-BR"
+    });
+  });
+</script>

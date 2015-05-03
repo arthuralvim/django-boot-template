@@ -1,1 +1,3 @@
-from prod import *
+# -*- coding: utf-8 -*-
+
+from prod import *  # noqa

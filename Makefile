@@ -5,19 +5,17 @@ FABRIC=$(VIRTUAL_ENV)/bin/fab
 GUNICORN=$(VIRTUAL_ENV)/bin/gunicorn
 MANAGE_PY=$(VIRTUAL_ENV)/bin/python manage.py
 PIP=$(VIRTUAL_ENV)/bin/pip
-PROVY=$(VIRTUAL_ENV)/bin/provy
 PY=$(VIRTUAL_ENV)/bin/python
-UWSGI=$(VIRTUAL_ENV)/bin/uwsgi
-
 SETTINGS_DEV={{ project_name }}.settings.dev
 SETTINGS_PROD={{ project_name }}.settings.prod
-SETTINGS_STAGE={{ project_name }}.settings.stage
-SETTINGS_TEST={{ project_name }}.settings.test
 
 # These targets are not files
-.PHONY: all dev prod stage test boot requirements requirements.update createsuperuser shell clean clean.django pep8 compile help runserver server gunicorn uwsgi translate.br makemessages compilemessages db db.delete.sqlite3 db.fresh db.clear migrate migration.initial migrate.fake migrate.app migration.convert migration.data migration fixtures.dump fixtures.load provision deploy static tests coverage heroku.remote heroku.create heroku.delete heroku.static heroku.migrate heroku.push heroku.deploy heroku.db.reset open vm check.venv check.app check.file check.settings check.user check.email check.branch
+.PHONY: all bower broadcast check.app check.branch check.email check.file check.settings check.user check.venv clean compile compilemessages coverage db db.delete.sqlite3 db.fixtures.dump db.fixtures.load db.reboot deploy dev env gunicorn help heroku.create heroku.db.create heroku.db.destroy heroku.db.reset heroku.destroy heroku.env.down heroku.env.up heroku.init heroku.migrate heroku.push heroku.remote heroku.static heroku.super makemessages mig mmig new_app pep8 prod provision requirements requirements.dev requirements.update runserver shell static super tests translate.br vm
 
 all: help
+
+help:
+	@echo 'Makefile *** {{ project_name }} *** Makefile'
 
 check.venv:
 	@if test "$(VIRTUAL_ENV)" = "" ; then echo "VIRTUAL_ENV is undefined"; exit 1; fi
@@ -48,24 +46,23 @@ dev: check.venv
 prod: check.venv
 	$(eval SETTINGS:=$(SETTINGS_PROD))
 
-stage: check.venv
-	$(eval SETTINGS:=$(SETTINGS_STAGE))
-
-test: check.venv
-	$(eval SETTINGS:=$(SETTINGS_TEST))
-
-# ---
-
-# UTIL
+env:
+	@cp .env-example .env
 
 requirements:
 	@$(PIP) install -r requirements.txt
 
+requirements.dev:
+	@$(PIP) install -r requirements/test.txt
+
 requirements.update:
 	@$(PIP) install -U -r requirements.txt
 
-createsuperuser: check.user check.email check.settings
+super: check.user check.email check.settings
 	@$(MANAGE_PY) createsuperuser --username=$(USER) --email=$(EMAIL) --settings=$(SETTINGS)
+
+bower: check.settings
+	@$(MANAGE_PY) bower install --settings=$(SETTINGS)
 
 shell: check.settings
 	@$(MANAGE_PY) shell --settings=$(SETTINGS)
@@ -75,16 +72,17 @@ clean:
 	@find . -name 'Thumbs.db' -exec rm -f {} \;
 	@find . -name '*~' -exec rm -f {} \;
 
+clean.migrations:
+	@find . -path "*/migrations/*.pyc*"  ! -name "__init__.py" -exec rm -f {} \;
+
 pep8:
-	@pep8 --filename="*.py" --ignore=W --exclude="manage.py,settings.py,migrations" --first --show-source --statistics --count {{ project_name }}
+	@pep8 --filename="*.py" --ignore=W --exclude="migrations" --first --show-source --statistics --count {{ project_name }}
 
 compile:
 	@$(PY) -m compileall {{ project_name }}
 
-help:
-	@echo 'Just a makefile to help django-projects.'
-
-boot: db migrate static
+new_app:
+	@echo "WIP"
 # ---
 
 # SERVER
@@ -92,14 +90,11 @@ boot: db migrate static
 runserver: check.settings
 	@$(MANAGE_PY) runserver --settings=$(SETTINGS)
 
-server: check.settings
+broadcast: check.settings
 	@$(MANAGE_PY) runserver 0.0.0.0:8000 --settings=$(SETTINGS)
 
 gunicorn: check.settings
 	@$(GUNICORN) {{ project_name }}.wsgi -w 4 -b 127.0.0.1:8000 --settings=$(SETTINGS)
-
-uwsgi:
-	@uwsgi -p 4 -s 127.0.0.1:8000 --ini deploy/uwsgi.ini
 
 # ---
 
@@ -118,53 +113,24 @@ compilemessages: check.settings
 
 # DATABASE
 
-db: check.settings
-	@$(MANAGE_PY) syncdb --noinput --settings=$(SETTINGS)
+db: check.settings makemig mig
 
 db.delete.sqlite3:
 	@rm {{ project_name }}/db/{{ project_name }}.sqlite3
 
-db.fresh: db.delete.sqlite3 db
+db.reboot: db.delete.sqlite3 db
 
-db.clear: check.app check.settings
-	@$(MANAGE_PY) sqlclear $(APP) --settings=$(SETTINGS) | $(MANAGE_PY) dbshell --settings=$(SETTINGS)
-
-migrate: check.settings
+mig: check.settings
 	@$(MANAGE_PY) migrate --settings=$(SETTINGS)
 
-migrate.fake: check.settings
-	@$(MANAGE_PY) migrate --fake --settings=$(SETTINGS)
+mmig: check.settings
+	@$(MANAGE_PY) makemigrations --settings=$(SETTINGS)
 
-migrate.app: check.app check.settings
-	@$(MANAGE_PY) migrate $(APP)  --settings=$(SETTINGS)
-
-migration.initial: check.app check.settings
-	@$(MANAGE_PY) schemamigration $(APP) --initial  --settings=$(SETTINGS)
-
-migration.convert: check.app check.settings
-	@$(MANAGE_PY) convert_to_south $(APP)  --settings=$(SETTINGS)
-
-migration.data: check.app check.settings
-	@$(MANAGE_PY) datamigration $(APP)  --settings=$(SETTINGS)
-
-migration: check.app check.settings
-	@$(MANAGE_PY) schemamigration $(APP) --auto --settings=$(SETTINGS)
-
-fixtures.dump: check.app check.settings
+db.fixtures.dump: check.app check.settings
 	@$(MANAGE_PY) dumpdata $(APP) --indent=4 --format=json > initial_data.json --settings=$(SETTINGS)
 
-fixtures.load: check.file check.settings
+db.fixtures.load: check.file check.settings
 	@$(MANAGE_PY) loaddata $(FILE) --settings=$(SETTINGS)
-
-# ---
-
-# DEPLOY
-
-provision:
-	@$(PROVY) -s prod
-
-deploy:
-	@$(FABRIC) deploy
 
 # ---
 
@@ -173,56 +139,69 @@ deploy:
 static: check.settings
 	@$(MANAGE_PY) collectstatic --clear --noinput --settings=$(SETTINGS)
 
-# to push files to s3
-# publish:
-
 # ---
 
 # TESTS
 
-tests:
-	@$(MANAGE_PY) test --settings=$(SETTINGS_TEST)
+tests: check.settings
+	@$(MANAGE_PY) test --settings=$(SETTINGS)
 
 coverage:
-    @$(MANAGE_PY) test_coverage --settings=$(SETTINGS_TEST)
+	@$(MANAGE_PY) test_coverage --settings=$(SETTINGS)
 
 # ---
 
-#  HEROKU
+# DEPLOY
 
-heroku.create:
-	@heroku create --stack cedar {{ project_name }}
+provision:
+	@echo "WIP"
 
-heroku.delete:
-	@heroku destroy {{ project_name }}
-
-heroku.remote:
-	@heroku git:remote -a {{ project_name }}
-	# git remote add heroku git@heroku.com:{{ project_name }}.git
-
-heroku.db.reset:
-	@heroku heroku pg:reset DATABASE_URL
-
-heroku.static:
-	@heroku run python manage.py collectstatic --clear --noinput --settings=$(SETTINGS_PROD)
-
-heroku.migrate:
-	@heroku run python manage.py syncdb --noinput --settings=$(SETTINGS_PROD)
-	@heroku run python manage.py migrate --settings=$(SETTINGS_PROD)
-
-heroku.push: check.branch
-	@git push heroku $(BRANCH):master
-
-heroku.deploy: heroku.push heroku.migrate
-
-open:
-	@heroku open
-
-# ---
-
-# VIRTUAL MACHINES
+deploy:
+	@echo "WIP"
 
 vm:
 	@vagrant destroy && vagrant up
 
 # ---
+
+#  HEROKU
+
+heroku.init: heroku.create heroku.env.up heroku.db.create heroku.static heroku.migrate heroku.super
+
+heroku.create:
+	@heroku create --stack cedar {{ project_name }}
+
+heroku.destroy:
+	@heroku destroy {{ project_name }}
+
+heroku.remote:
+	@heroku git:remote -a {{ project_name }}
+
+heroku.db.create:
+	@heroku addons:add heroku-postgresql
+
+heroku.db.destroy:
+	@heroku addons:remove heroku-postgresql
+
+heroku.db.reset:
+	@heroku pg:reset DATABASE_URL
+
+heroku.static:
+	@heroku run python manage.py collectstatic --clear --noinput --settings=$(SETTINGS_PROD)
+
+heroku.super:
+	@heroku run python manage.py createsuperuser --settings=$(SETTINGS_PROD)
+
+heroku.migrate:
+	@heroku run python manage.py migrate --settings=$(SETTINGS_PROD)
+
+heroku.push:
+	@git push heroku master
+
+heroku.env.up:
+	@heroku config:push
+
+heroku.env.down:
+	@heroku config:pull
+
+# --- EOF --- #

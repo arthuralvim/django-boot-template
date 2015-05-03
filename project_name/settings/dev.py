@@ -1,13 +1,13 @@
-from prod import *
+# -*- coding: utf-8 -*-
 
-DEBUG = True
-DEBUG_TEMPLATE = True
+from prod import *  # noqa
+
+DEBUG_TEMPLATE_VARS = config('DEBUG_TEMPLATE_VARS', default=False, cast=bool)
 DEBUG_TOOLBAR = config('DEBUG_TOOLBAR', default=False, cast=bool)
-COVERAGE = config('COVERAGE', default=False, cast=bool)
-ALLOWED_HOSTS = ['*', ]
+TEST_COVERAGE = config('TEST_COVERAGE', default=False, cast=bool)
+TEST_NOSE = config('TEST_NOSE', default=False, cast=bool)
 
 if DEBUG_TOOLBAR:
-
     MIDDLEWARE_CLASSES += (
         'debug_toolbar.middleware.DebugToolbarMiddleware',
     )
@@ -15,13 +15,31 @@ if DEBUG_TOOLBAR:
     DEBUG_APPS = ('debug_toolbar', )
     INSTALLED_APPS += DEBUG_APPS
 
-    INTERNAL_IPS = ('127.0.0.1',)
+    INTERNAL_IPS = ('127.0.0.1', )
 
     DEBUG_TOOLBAR_CONFIG = {
         'INTERCEPT_REDIRECTS': False,
     }
 
-if COVERAGE:
+if DEBUG_TEMPLATE_VARS:
+    class InvalidVarException(object):
+        def __mod__(self, missing):
+            try:
+                missing_str = unicode(missing)
+            except:
+                missing_str = 'Failed to create string representation'
+            raise Exception('Unknown template variable %r %s' % (missing,
+                            missing_str))
+
+        def __contains__(self, search):
+            if search == '%s':
+                return True
+            return False
+
+    TEMPLATE_DEBUG = True
+    TEMPLATE_STRING_IF_INVALID = InvalidVarException()
+
+if TEST_COVERAGE:
     COVERAGE_APPS = ('django_coverage', )
     INSTALLED_APPS += COVERAGE_APPS
     COVERAGE_REPORT_HTML_OUTPUT_DIR = 'cover'
@@ -32,3 +50,27 @@ if COVERAGE:
         'tests$', 'settings$', 'urls$', 'fixtures$',
         '__init__', 'django', 'migrations'] + list(DJANGO_APPS) + \
         list(THIRD_PARTY_APPS) + list(DEBUG_APPS) + list(COVERAGE_APPS)
+
+if TEST_NOSE:
+    INSTALLED_APPS += (
+        'django_nose',
+    )
+
+    TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+
+    NOSE_ARGS = [
+        '--match=^(must|ensure|should|test|it_should)',
+        '--where={{ project_name }}',
+        '--verbosity=2',
+        '--nologcapture',
+        '--rednose',
+        # '--with-id',
+        # '--id-file=.noseids',
+        # '--failed',
+        # '--with-coverage',
+        # '--cover-erase',
+        # '--cover-html',
+        # '--cover-html-dir=../cover',
+        # '--cover-package={{ project_name }}',
+        # '--cover-inclusive',
+    ]

@@ -73,10 +73,15 @@ target/
 # Deploy
 .vagrant
 
+# Django stuff:
+*.log
+
 # {{ project_name }}
 .env
 {{ project_name }}/media/*
+{{ project_name }}/static/*
 {{ project_name }}/staticfiles/*
+vendor/
 
 # Todo
 *.todo

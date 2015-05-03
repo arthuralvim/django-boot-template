@@ -1,0 +1,47 @@
+<ul class="pagination pagination-lg">
+    {% if has_previous %}
+        {% if querystr %}
+        <li><a href="?{{ querystr }}&page={{ paged.previous_page_number }}">&lsaquo;&lsaquo;</a></li>
+        {% else %}
+        <li><a href="?page={{ paged.previous_page_number }}">&lsaquo;&lsaquo;</a></li>
+        {% endif %}
+    {% else %}
+        <li class="disabled"><a href="#">&lsaquo;&lsaquo;</a></li>
+    {% endif %}
+
+    {% if show_first %}
+        {% if querystr %}
+        <li><a href="?{{ querystr }}&page=1">1</a></li>
+        {% else %}
+        <li><a href="?page=1">1</a></li>
+        {% endif %}
+        <li class="disabled"><a href="#">...</a></li>
+    {% endif %}
+
+    {% for pageaux in page_numbers %}
+        {% if querystr %}
+        <li {% ifequal pageaux page %} class="active" {% endifequal %} ><a href="?{{ querystr }}&page={{ pageaux }}">{{ pageaux }}</a></li>
+        {% else %}
+        <li {% ifequal pageaux page %} class="active" {% endifequal %} ><a href="?page={{ pageaux }}">{{ pageaux }}</a></li>
+        {% endif %}
+    {% endfor %}
+
+    {% if show_last %}
+        <li class="disabled"><a href="#">...</a></li>
+        {% if querystr %}
+        <li><a href="?{{ querystr }}&page=last">{{ pages }}</a></li>
+        {% else %}
+        <li><a href="?page=last">{{ pages }}</a></li>
+        {% endif %}
+    {% endif %}
+
+    {% if has_next %}
+        {% if querystr %}
+        <li><a href="?{{ querystr }}&page={{ paged.next_page_number }}">&rsaquo;&rsaquo;</a></li>
+        {% else %}
+        <li> <a href="?page={{ paged.next_page_number }}">&rsaquo;&rsaquo;</a></li>
+        {% endif %}
+    {% else %}
+        <li class="disabled"><a href="#">&rsaquo;&rsaquo;</a></li>
+    {% endif %}
+</ul>
