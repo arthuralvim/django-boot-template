@@ -81,6 +81,8 @@ pep8:
 compile:
 	@$(PY) -m compileall {{ project_name }}
 
+init: check.settings env mmig mig runserver
+
 new_app:
 	@echo "WIP"
 # ---
