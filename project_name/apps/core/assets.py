@@ -4,6 +4,8 @@ PIPELINE_JS = {
         'source_filenames': (
             'jquery/dist/jquery.min.js',
             'bootstrap/dist/js/bootstrap.js',
+            'underscore/underscore.js',
+            'handlebars/handlebars.js',
             'backbone/backbone.js',
             'marionette/lib/backbone.marionette.js',
             'd3/d3.js',
@@ -15,7 +17,6 @@ PIPELINE_JS = {
         'output_filename': 'js/vendor.js',
     }
 }
-
 
 PIPELINE_CSS = {
     'base': {
