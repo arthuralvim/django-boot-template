@@ -11,6 +11,7 @@ if USE_AWS_S3:
     AWS_HEADERS = {'Cache-Control': 'max-age=86400', }
     AWS_PRELOAD_METADATA = True
     AWS_QUERYSTRING_AUTH = False
+    AWS_S3_SECURE_URLS = False
     STATIC_DIRECTORY = config('S3_STATIC_ROOT', default='static/')
     MEDIA_DIRECTORY = config('S3_MEDIA_ROOT', default='media/')
     DEFAULT_FILE_STORAGE = '{{ project_name }}.apps.core.s3.MEDIA_S3_STORAGE'

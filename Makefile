@@ -10,7 +10,7 @@ SETTINGS_DEV={{ project_name }}.settings.dev
 SETTINGS_PROD={{ project_name }}.settings.prod
 
 # These targets are not files
-.PHONY: all bower broadcast check.app check.branch check.email check.file check.settings check.user check.venv clean compile compilemessages coverage db db.delete.sqlite3 db.fixtures.dump db.fixtures.load db.reboot deploy dev env gunicorn help heroku.create heroku.db.create heroku.db.destroy heroku.db.reset heroku.destroy heroku.env.down heroku.env.up heroku.init heroku.migrate heroku.push heroku.remote heroku.static heroku.super makemessages mig mmig new_app pep8 prod provision requirements requirements.dev requirements.update runserver shell static super tests translate.br vm
+.PHONY: all bower broadcast check.app check.branch check.email check.file check.settings check.user check.venv clean compile compilemessages coverage db db.delete.sqlite3 db.fixtures.dump db.fixtures.load db.reboot deploy dev env gunicorn help heroku.create heroku.db.create heroku.db.destroy heroku.db.reset heroku.destroy heroku.env.down heroku.env.up heroku.init heroku.migrate heroku.push heroku.remote heroku.static heroku.super makemessages mig mmig new_app pep8 prod provision requirements requirements.dev requirements.update runserver debugsh shell static super tests translate.br vm
 
 all: help
 
@@ -66,6 +66,9 @@ bower: check.settings
 
 shell: check.settings
 	@$(MANAGE_PY) shell --settings=$(SETTINGS)
+
+debugsh: check.settings
+	@$(MANAGE_PY) debugsqlshell --settings=$(SETTINGS)
 
 clean:
 	@find . -name '*.pyc' -exec rm -f {} \;

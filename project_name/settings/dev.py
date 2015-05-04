@@ -6,19 +6,36 @@ DEBUG_TEMPLATE_VARS = config('DEBUG_TEMPLATE_VARS', default=False, cast=bool)
 DEBUG_TOOLBAR = config('DEBUG_TOOLBAR', default=False, cast=bool)
 TEST_COVERAGE = config('TEST_COVERAGE', default=False, cast=bool)
 TEST_NOSE = config('TEST_NOSE', default=False, cast=bool)
+USE_AWS_S3 = config('USE_AWS_S3', default=False, cast=bool)
 
 if DEBUG_TOOLBAR:
+    DEBUG_APPS = ('debug_toolbar', )
+    INSTALLED_APPS += DEBUG_APPS
+
     MIDDLEWARE_CLASSES += (
         'debug_toolbar.middleware.DebugToolbarMiddleware',
     )
 
-    DEBUG_APPS = ('debug_toolbar', )
-    INSTALLED_APPS += DEBUG_APPS
+    DEBUG_TOOLBAR_PATCH_SETTINGS = False
 
     INTERNAL_IPS = ('127.0.0.1', )
 
     DEBUG_TOOLBAR_CONFIG = {
         'INTERCEPT_REDIRECTS': False,
+        'JQUERY_URL': None,
+    }
+
+    if USE_AWS_S3:
+        # removed by a clash with S3 lib
+        DEBUG_TOOLBAR_CONFIG['DISABLE_PANELS'] = set([
+            'debug_toolbar.panels.staticfiles.StaticFilesPanel',
+        ])
+
+    CONFIG_DEFAULTS = {
+        # Toolbar options
+        'SHOW_COLLAPSED': True,
+        # Panel options
+        'SQL_WARNING_THRESHOLD': 300,   # milliseconds
     }
 
 if DEBUG_TEMPLATE_VARS:
