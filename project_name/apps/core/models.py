@@ -54,7 +54,7 @@ class AmazonS3PrivateFile(object):
 class Example(AmazonS3PrivateFile, models.Model):
 
     text = models.TextField(verbose_name='text', blank=True, null=True)
-    number = models.IntegerField(verbose_name='text', blank=True, null=True)
+    number = models.IntegerField(verbose_name='number', blank=True, null=True)
     public_file = models.FileField(blank=True, null=True, upload_to='public')
     private_file = models.FileField(blank=True, null=True, upload_to='private')
 

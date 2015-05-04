@@ -6,6 +6,7 @@ DJANGO_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    # 'collectfast',  # collectfast must come before staticfiles in Django 1.7+
     'django.contrib.staticfiles',
 )
 

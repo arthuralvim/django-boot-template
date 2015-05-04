@@ -145,11 +145,11 @@ static: check.settings
 
 # TESTS
 
-tests: check.settings
-	@$(MANAGE_PY) test --settings=$(SETTINGS)
+tests:
+	@$(MANAGE_PY) test --settings=$(SETTINGS_DEV)
 
 coverage:
-	@$(MANAGE_PY) test_coverage --settings=$(SETTINGS)
+	@$(MANAGE_PY) test_coverage --settings=$(SETTINGS_DEV)
 
 # ---
 

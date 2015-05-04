@@ -4,9 +4,14 @@ from .apps import LOCAL_APPS
 from django.utils.importlib import import_module
 
 STATICFILES_STORAGE = 'pipeline.storage.PipelineCachedStorage'
-# STATICFILES_STORAGE = '{{ project_name }}.apps.core.s3.S3PipelineStorage'
 
+PIPELINE_ENABLED = True
 PIPELINE_DISABLE_WRAPPER = True
+
+# npm install -g uglify-js
+
+PIPELINE_JS_COMPRESSOR = 'pipeline.compressors.uglifyjs.UglifyJSCompressor'
+PIPELINE_UGLIFYJS_ARGUMENTS = '--compress --mangle'
 
 PIPELINE_JS = {}
 PIPELINE_CSS = {}

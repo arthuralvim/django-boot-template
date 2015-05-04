@@ -12,7 +12,22 @@ from logging import getLogger
 from storages.backends.s3boto import S3BotoStorage
 
 logger = getLogger('django.request')
-STATIC_S3_STORAGE = lambda: S3BotoStorage(location=settings.STATIC_DIRECTORY)
+
+from django.contrib.staticfiles.storage import CachedFilesMixin
+from django.contrib.staticfiles.storage import ManifestFilesMixin
+from pipeline.storage import PipelineMixin
+
+
+class S3PipelineManifestStorage(PipelineMixin, ManifestFilesMixin,
+                                S3BotoStorage):
+    pass
+
+
+class S3PipelineCachedStorage(PipelineMixin, CachedFilesMixin, S3BotoStorage):
+    pass
+
+STATIC_S3_STORAGE = lambda: S3PipelineManifestStorage(
+    location=settings.STATIC_DIRECTORY)
 MEDIA_S3_STORAGE = lambda: S3BotoStorage(location=settings.MEDIA_DIRECTORY)
 
 
@@ -23,7 +38,8 @@ class PrivateFileView(RedirectView):
     A generic class to be extended so the Amazon S3 files would act like
     they're private files.
     example of url:
-    url(r'^private/(?P<pk>[\d]+)/$', views.SecretFileView.as_view(), name='private_file'),
+    url(r'^private/(?P<pk>[\d]+)/$', views.SecretFileView.as_view(),
+        name='private_file'),
 
     """
     permanent = False
