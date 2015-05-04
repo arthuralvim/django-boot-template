@@ -18,6 +18,7 @@ THIRD_PARTY_APPS = (
     'bootstrap3',
     'django_filters',
     'djangobower',
+    'djcelery',
     'gunicorn',
     'pipeline',
     'raven.contrib.django.raven_compat',

@@ -64,3 +64,6 @@ class Example(AmazonS3PrivateFile, models.Model):
     class Meta:
         verbose_name = "example"
         verbose_name_plural = "examples"
+
+    def __unicode__(self):
+        return u'<Example {0} - {1}>'.format(self.text, self.number)

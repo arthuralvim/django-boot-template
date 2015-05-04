@@ -10,7 +10,7 @@ SETTINGS_DEV={{ project_name }}.settings.dev
 SETTINGS_PROD={{ project_name }}.settings.prod
 
 # These targets are not files
-.PHONY: all bower broadcast check.app check.branch check.email check.file check.settings check.user check.venv clean compile compilemessages coverage db db.delete.sqlite3 db.fixtures.dump db.fixtures.load db.reboot deploy dev env gunicorn help heroku.create heroku.db.create heroku.db.destroy heroku.db.reset heroku.destroy heroku.env.down heroku.env.up heroku.init heroku.migrate heroku.push heroku.remote heroku.static heroku.super makemessages mig mmig new_app pep8 prod provision requirements requirements.dev requirements.update runserver debugsh shell static super tests translate.br vm
+.PHONY: all bower broadcast cache.clear cel celbeat check.app check.branch check.email check.file check.settings check.user check.venv clean compile compilemessages coverage db db.delete.sqlite3 db.fixtures.dump db.fixtures.load db.reboot deploy dev env gunicorn help heroku.create heroku.db.create heroku.db.destroy heroku.db.reset heroku.destroy heroku.env.down heroku.env.up heroku.init heroku.migrate heroku.push heroku.remote heroku.static heroku.super makemessages mig mmig new_app pep8 prod provision rebuild_index requirements requirements.dev requirements.update runserver debugsh shell static super tests translate.br vm
 
 all: help
 
@@ -100,6 +100,30 @@ broadcast: check.settings
 
 gunicorn: check.settings
 	@$(GUNICORN) {{ project_name }}.wsgi -w 4 -b 127.0.0.1:8000 --settings=$(SETTINGS)
+
+# ---
+
+# CELERY
+
+cel: check.settings
+	@$(MANAGE_PY) celery worker -c 4 --loglevel=DEBUG --settings=$(SETTINGS)
+
+celbeat: check.settings
+	@$(MANAGE_PY) celerybeat --settings=$(SETTINGS)
+
+# ---
+
+# CACHE
+
+cache.clear: check.settings
+	@$(MANAGE_PY) clear_cache --settings=$(SETTINGS)
+
+# ---
+
+# HAYSTACK
+
+rebuild_index: check.settings
+	@$(MANAGE_PY) rebuild_index --noinput --settings=$(SETTINGS)
 
 # ---
 
