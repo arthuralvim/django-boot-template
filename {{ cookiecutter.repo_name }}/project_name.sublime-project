@@ -1,4 +1,4 @@
-// {{ project_name }}.sublime-project
+// {{ cookiecutter.repo_name }}.sublime-project
 {
     "folders":
     [
@@ -8,10 +8,10 @@
         }
     ],
     "settings": {
-        "python_interpreter_path": "~/.virtualenvs/{{ project_name }}/bin/python",
+        "python_interpreter_path": "~/.virtualenvs/{{ cookiecutter.repo_name }}/bin/python",
 
         "python_package_paths": [
-            "~/.virtualenvs/{{ project_name }}/lib/python2.7/site-packages/"
+            "~/.virtualenvs/{{ cookiecutter.repo_name }}/lib/python2.7/site-packages/"
             ]
     }
 }

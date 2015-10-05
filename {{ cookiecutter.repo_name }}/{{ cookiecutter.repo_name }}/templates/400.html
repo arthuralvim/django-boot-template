@@ -1,7 +1,7 @@
-{% templatetag openblock %} extends "error.html" {% templatetag closeblock %}
+{% extends "error.html" %}
 
-{% templatetag openblock %} block title {% templatetag closeblock %} Bad Request {% templatetag openblock %} endblock title {% templatetag closeblock %}
+{% block title %} Bad Request {% endblock title %}
 
-{% templatetag openblock %} block content {% templatetag closeblock %}
+{% block content %}
     <h1>Error 400 - Bad Request</h1>
-{% templatetag openblock %} endblock content {% templatetag closeblock %}
+{% endblock content %}

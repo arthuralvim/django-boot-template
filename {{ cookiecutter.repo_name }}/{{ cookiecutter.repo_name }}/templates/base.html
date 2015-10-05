@@ -1,26 +1,26 @@
 <!DOCTYPE html>
 <html lang="en" class="no-js">
     <head>
-        <title>{% templatetag openblock %} block title {% templatetag closeblock %} {{ project_name }}{% templatetag openblock %} endblock title {% templatetag closeblock %}</title>
+        <title>{% block title %} {{ cookiecutter.repo_name }} {% endblock title %}</title>
         <meta charset="utf-8">
-        <meta name="author" content="{{ project_name }}">
-        <meta name="copyright" content="{{ project_name }}">
-        <meta name="description" content="{{ project_name }}">
-        <meta name="keywords" content="{{ project_name }}">
+        <meta name="author" content="{{ cookiecutter.repo_name }}">
+        <meta name="copyright" content="{{ cookiecutter.repo_name }}">
+        <meta name="description" content="{{ cookiecutter.repo_name }}">
+        <meta name="keywords" content="{{ cookiecutter.repo_name }}">
         <meta name="robots" content="index, follow">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        {% templatetag openblock %} block extra_meta {% templatetag closeblock %} {% templatetag openblock %} endblock extra_meta {% templatetag closeblock %}
-        {% templatetag openblock %} block styles {% templatetag closeblock %} {% templatetag openblock %} endblock styles {% templatetag closeblock %}
-        {% templatetag openblock %} block favicon {% templatetag closeblock %} {% templatetag openblock %} endblock favicon {% templatetag closeblock %}
+        {% block extra_meta %} {% endblock extra_meta %}
+        {% block styles %} {% endblock styles %}
+        {% block favicon %} {% endblock favicon %}
   </head>
 
   <body>
-    {% templatetag openblock %} block header {% templatetag closeblock %} {% templatetag openblock %} endblock header {% templatetag closeblock %}
-    {% templatetag openblock %} block menu {% templatetag closeblock %} {% templatetag openblock %} endblock menu {% templatetag closeblock %}
-    {% templatetag openblock %} block messages {% templatetag closeblock %} {% templatetag openblock %} endblock messages {% templatetag closeblock %}
-    {% templatetag openblock %} block content {% templatetag closeblock %} {% templatetag openblock %} endblock content {% templatetag closeblock %}
-    {% templatetag openblock %} block footer {% templatetag closeblock %} {% templatetag openblock %} endblock footer {% templatetag closeblock %}
-    {% templatetag openblock %} block scripts {% templatetag closeblock %} {% templatetag openblock %} endblock scripts {% templatetag closeblock %}
-    {% templatetag openblock %} block tracking {% templatetag closeblock %} {% templatetag openblock %} endblock tracking {% templatetag closeblock %}
+    {% block header %} {% endblock header %}
+    {% block menu %} {% endblock menu %}
+    {% block messages %} {% endblock messages %}
+    {% block content %} {% endblock content %}
+    {% block footer %} {% endblock footer %}
+    {% block scripts %} {% endblock scripts %}
+    {% block tracking %} {% endblock tracking %}
   </body>
 </html>

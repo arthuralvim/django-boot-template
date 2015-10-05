@@ -8,12 +8,12 @@ from decouple import config
 import multiprocessing
 import os
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', '{{ project_name }}.settings')  # noqa
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', '{{ cookiecutter.repo_name }}.settings')  # noqa
 
 from django.conf import settings
 
 BROKER_URL = config('BROKER_URL')
-app = Celery('{{ project_name }}')
+app = Celery('{{ cookiecutter.repo_name }}')
 
 app.config_from_object('django.conf:settings')
 app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)

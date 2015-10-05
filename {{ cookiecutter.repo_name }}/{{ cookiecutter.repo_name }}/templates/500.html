@@ -1,7 +1,7 @@
-{% templatetag openblock %} extends "error.html" {% templatetag closeblock %}
+{% extends "error.html" %}
 
-{% templatetag openblock %} block title {% templatetag closeblock %} Internal Server Error {% templatetag openblock %} endblock title {% templatetag closeblock %}
+{% block title %} Internal Server Error {% endblock title %}
 
-{% templatetag openblock %} block content {% templatetag closeblock %}
+{% block content %}
     <h1>Error 500 - Internal Server Error</h1>
-{% templatetag openblock %} endblock content {% templatetag closeblock %}
+{% endblock content %}

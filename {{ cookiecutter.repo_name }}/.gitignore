@@ -76,11 +76,11 @@ target/
 # Django stuff:
 *.log
 
-# {{ project_name }}
+# {{ cookiecutter.repo_name }}
 .env
-{{ project_name }}/media/*
-{{ project_name }}/static/*
-{{ project_name }}/staticfiles/*
+{{ cookiecutter.repo_name }}/media/*
+{{ cookiecutter.repo_name }}/static/*
+{{ cookiecutter.repo_name }}/staticfiles/*
 vendor/
 
 # Todo

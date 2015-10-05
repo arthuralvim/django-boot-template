@@ -1,7 +1,7 @@
-{% templatetag openblock %} extends "error.html" {% templatetag closeblock %}
+{% extends "error.html" %}
 
-{% templatetag openblock %} block title {% templatetag closeblock %} Forbidden {% templatetag openblock %} endblock title {% templatetag closeblock %}
+{% block title %} Forbidden {% endblock title %}
 
-{% templatetag openblock %} block content {% templatetag closeblock %}
+{% block content %}
     <h1>Error 403 - Forbidden</h1>
-{% templatetag openblock %} endblock content {% templatetag closeblock %}
+{% endblock content %}

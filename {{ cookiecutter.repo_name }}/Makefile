@@ -1,4 +1,4 @@
-# Makefile {{ project_name }}
+# Makefile {{ cookiecutter.repo_name }}
 
 DJADMIN_PY=$(VIRTUAL_ENV)/bin/django-admin.py
 FABRIC=$(VIRTUAL_ENV)/bin/fab
@@ -6,8 +6,8 @@ GUNICORN=$(VIRTUAL_ENV)/bin/gunicorn
 MANAGE_PY=$(VIRTUAL_ENV)/bin/python manage.py
 PIP=$(VIRTUAL_ENV)/bin/pip
 PY=$(VIRTUAL_ENV)/bin/python
-SETTINGS_DEV={{ project_name }}.settings.dev
-SETTINGS_PROD={{ project_name }}.settings.prod
+SETTINGS_DEV={{ cookiecutter.repo_name }}.settings.dev
+SETTINGS_PROD={{ cookiecutter.repo_name }}.settings.prod
 
 # These targets are not files
 .PHONY: all bower broadcast cache.clear cel celbeat check.app check.branch check.email check.file check.settings check.user check.venv clean compile compilemessages coverage db db.delete.sqlite3 db.fixtures.dump db.fixtures.load db.reboot deploy dev env gunicorn help heroku.create heroku.db.create heroku.db.destroy heroku.db.reset heroku.destroy heroku.env.down heroku.env.up heroku.init heroku.migrate heroku.push heroku.remote heroku.static heroku.super makemessages mig mmig new_app pep8 prod provision rebuild_index requirements requirements.dev requirements.update runserver debugsh shell static super tests translate.br vm
@@ -15,7 +15,7 @@ SETTINGS_PROD={{ project_name }}.settings.prod
 all: help
 
 help:
-	@echo 'Makefile *** {{ project_name }} *** Makefile'
+	@echo 'Makefile *** {{ cookiecutter.repo_name }} *** Makefile'
 
 check.venv:
 	@if test "$(VIRTUAL_ENV)" = "" ; then echo "VIRTUAL_ENV is undefined"; exit 1; fi
@@ -79,10 +79,10 @@ clean.migrations:
 	@find . -path "*/migrations/*.pyc*"  ! -name "__init__.py" -exec rm -f {} \;
 
 pep8:
-	@pep8 --filename="*.py" --ignore=W --exclude="migrations" --first --show-source --statistics --count {{ project_name }}
+	@pep8 --filename="*.py" --ignore=W --exclude="migrations" --first --show-source --statistics --count {{ cookiecutter.repo_name }}
 
 compile:
-	@$(PY) -m compileall {{ project_name }}
+	@$(PY) -m compileall {{ cookiecutter.repo_name }}
 
 init: check.settings env mmig mig runserver
 
@@ -99,7 +99,7 @@ broadcast: check.settings
 	@$(MANAGE_PY) runserver 0.0.0.0:8000 --settings=$(SETTINGS)
 
 gunicorn: check.settings
-	@$(GUNICORN) {{ project_name }}.wsgi -w 4 -b 127.0.0.1:8000 --settings=$(SETTINGS)
+	@$(GUNICORN) {{ cookiecutter.repo_name }}.wsgi -w 4 -b 127.0.0.1:8000 --settings=$(SETTINGS)
 
 # ---
 
@@ -130,10 +130,10 @@ rebuild_index: check.settings
 # LANGUAGE / INTERNATIONALIZATION
 
 translate.br:
-	@cd {{ project_name }}; $(DJADMIN_PY) makemessages -l pt-br
+	@cd {{ cookiecutter.repo_name }}; $(DJADMIN_PY) makemessages -l pt-br
 
 makemessages:
-	@cd {{ project_name }}; $(DJADMIN_PY) makemessages -a
+	@cd {{ cookiecutter.repo_name }}; $(DJADMIN_PY) makemessages -a
 
 compilemessages: check.settings
 	@$(MANAGE_PY) compilemessages --settings=$(SETTINGS)
@@ -145,7 +145,7 @@ compilemessages: check.settings
 db: check.settings makemig mig
 
 db.delete.sqlite3:
-	@rm {{ project_name }}/db/{{ project_name }}.sqlite3
+	@rm {{ cookiecutter.repo_name }}/db/{{ cookiecutter.repo_name }}.sqlite3
 
 db.reboot: db.delete.sqlite3 db
 
@@ -198,13 +198,13 @@ vm:
 heroku.init: heroku.create heroku.env.up heroku.db.create heroku.static heroku.migrate heroku.super
 
 heroku.create:
-	@heroku create --stack cedar {{ project_name }}
+	@heroku create --stack cedar {{ cookiecutter.repo_name }}
 
 heroku.destroy:
-	@heroku destroy {{ project_name }}
+	@heroku destroy {{ cookiecutter.repo_name }}
 
 heroku.remote:
-	@heroku git:remote -a {{ project_name }}
+	@heroku git:remote -a {{ cookiecutter.repo_name }}
 
 heroku.db.create:
 	@heroku addons:add heroku-postgresql

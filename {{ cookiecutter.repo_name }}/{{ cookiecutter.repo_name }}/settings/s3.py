@@ -14,8 +14,8 @@ if USE_AWS_S3:
     AWS_S3_SECURE_URLS = False
     STATIC_DIRECTORY = config('S3_STATIC_ROOT', default='static/')
     MEDIA_DIRECTORY = config('S3_MEDIA_ROOT', default='media/')
-    DEFAULT_FILE_STORAGE = '{{ project_name }}.apps.core.s3.MEDIA_S3_STORAGE'
-    STATICFILES_STORAGE = '{{ project_name }}.apps.core.s3.STATIC_S3_STORAGE'
+    DEFAULT_FILE_STORAGE = '{{ cookiecutter.repo_name }}.apps.core.s3.MEDIA_S3_STORAGE'
+    STATICFILES_STORAGE = '{{ cookiecutter.repo_name }}.apps.core.s3.STATIC_S3_STORAGE'
     S3_URL = "https://%s.s3.amazonaws.com/" % AWS_STORAGE_BUCKET_NAME
     STATIC_URL = config('S3_STATIC_URL', default=S3_URL + STATIC_DIRECTORY)
     MEDIA_URL = config('S3_MEDIA_URL', default=S3_URL + MEDIA_DIRECTORY)

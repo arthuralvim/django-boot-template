@@ -5,10 +5,10 @@ from django.conf import settings
 from django.contrib import admin
 admin.autodiscover()
 
-handler400 = '{{ project_name }}.errors.bad_request'
+handler400 = '{{ cookiecutter.repo_name }}.errors.bad_request'
 handler403 = 'django.views.defaults.permission_denied'
 handler404 = 'django.views.defaults.page_not_found'
-handler500 = '{{ project_name }}.errors.server_error'
+handler500 = '{{ cookiecutter.repo_name }}.errors.server_error'
 
 urlpatterns = patterns(
     '',

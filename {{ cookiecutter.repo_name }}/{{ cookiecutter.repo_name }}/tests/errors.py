@@ -2,21 +2,21 @@ from django.test import TestCase
 from django.test.client import RequestFactory
 from django.views.defaults import permission_denied as handler403
 from django.views.defaults import page_not_found as handler404
-from {{ project_name }} import urls
-from {{ project_name }}.errors import bad_request as handler400
-from {{ project_name }}.errors import server_error as handler500
+from {{ cookiecutter.repo_name }} import urls
+from {{ cookiecutter.repo_name }}.errors import bad_request as handler400
+from {{ cookiecutter.repo_name }}.errors import server_error as handler500
 
 
 class TestErrorPages(TestCase):
 
     def test_error_handlers(self):
-        self.assertTrue(urls.handler400 == '{{ project_name }}.'
+        self.assertTrue(urls.handler400 == '{{ cookiecutter.repo_name }}.'
                         'errors.bad_request')
         self.assertTrue(urls.handler403 == 'django.views.'
                         'defaults.permission_denied')
         self.assertTrue(urls.handler404 == 'django.views.'
                         'defaults.page_not_found')
-        self.assertTrue(urls.handler500 == '{{ project_name }}.'
+        self.assertTrue(urls.handler500 == '{{ cookiecutter.repo_name }}.'
                         'errors.server_error')
         factory = RequestFactory()
         request = factory.get('/')

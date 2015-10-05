@@ -1,6 +1,6 @@
-{% templatetag openblock %} load bootstrap3 {% templatetag closeblock %}
+{% load bootstrap3 %}
 
-{% templatetag openblock %}  bootstrap_field field  {% templatetag closeblock %}
+{%  bootstrap_field field  %}
 <script type="text/javascript">
   $(function() {
     $("#{{ id }}").mask("000.000.000-00");

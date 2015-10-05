@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Django settings for {{ project_name }} project.
+Django settings for {{ cookiecutter.repo_name }} project.
 """
 
 from decouple import config
@@ -13,7 +13,7 @@ from unipath import Path
 BASE_DIR = Path(__file__).absolute().ancestor(2)
 path.insert(0, BASE_DIR.child('apps'))  # insert path to apps
 
-PROJECT_NAME = '{{ project_name }}'
+PROJECT_NAME = '{{ cookiecutter.repo_name }}'
 
 SECRET_KEY = config('SECRET_KEY')
 
@@ -21,7 +21,7 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 
 TEMPLATE_DEBUG = DEBUG
 
-ALLOWED_HOSTS = ['.{{ project_name }}.com', ]
+ALLOWED_HOSTS = ['.{{ cookiecutter.repo_name }}.com', ]
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
@@ -33,16 +33,16 @@ from .apps import *  # noqa
 
 # URLCONF
 
-ROOT_URLCONF = '{{ project_name }}.urls'
+ROOT_URLCONF = '{{ cookiecutter.repo_name }}.urls'
 
-WSGI_APPLICATION = '{{ project_name }}.wsgi.application'
+WSGI_APPLICATION = '{{ cookiecutter.repo_name }}.wsgi.application'
 
 # DATABASE
 
 DATABASES = {
     'default': config(
         'DATABASE_URL',
-        default='sqlite:///{0}/{1}'.format(BASE_DIR.child('db'), '{{ project_name }}.sqlite3'),  # noqa
+        default='sqlite:///{0}/{1}'.format(BASE_DIR.child('db'), '{{ cookiecutter.repo_name }}.sqlite3'),  # noqa
         cast=db_url),
 }
 

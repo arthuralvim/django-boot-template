@@ -1,15 +1,15 @@
-{% templatetag openblock %} extends "base.html" {% templatetag closeblock %}
+{% extends "base.html" %}
 
-{% templatetag openblock %} load pipeline {% templatetag closeblock %}
+{% load pipeline %}
 
-{% templatetag openblock %} block styles {% templatetag closeblock %}
-    {% templatetag openblock %} stylesheet 'base' {% templatetag closeblock %}
-{% templatetag openblock %} endblock styles {% templatetag closeblock %}
+{% block styles %}
+    {% stylesheet 'base' %}
+{% endblock styles %}
 
-{% templatetag openblock %} block content {% templatetag closeblock %}
+{% block content %}
     <h1>Welcome to the index.html!</h1>
-{% templatetag openblock %} endblock content {% templatetag closeblock %}
+{% endblock content %}
 
-{% templatetag openblock %} block scripts {% templatetag closeblock %}
-    {% templatetag openblock %} javascript 'vendor' {% templatetag closeblock %}
-{% templatetag openblock %} endblock scripts {% templatetag closeblock %}
+{% block scripts %}
+    {% javascript 'vendor' %}
+{% endblock scripts %}

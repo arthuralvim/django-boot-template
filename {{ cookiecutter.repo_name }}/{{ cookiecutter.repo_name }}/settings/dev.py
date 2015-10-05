@@ -77,7 +77,7 @@ if TEST_NOSE:
 
     NOSE_ARGS = [
         '--match=^(must|ensure|should|test|it_should)',
-        '--where={{ project_name }}',
+        '--where={{ cookiecutter.repo_name }}',
         '--verbosity=2',
         '--nologcapture',
         '--rednose',
@@ -88,6 +88,6 @@ if TEST_NOSE:
         # '--cover-erase',
         # '--cover-html',
         # '--cover-html-dir=../cover',
-        # '--cover-package={{ project_name }}',
+        # '--cover-package={{ cookiecutter.repo_name }}',
         # '--cover-inclusive',
     ]

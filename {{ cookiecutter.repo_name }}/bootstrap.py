@@ -4,7 +4,7 @@ output = virtualenv.create_bootstrap_script(textwrap.dedent("""
 import os, subprocess
 import urllib2
 
-REPO = 'https://github.com/arthuralvim/{{ project_name }}.git'
+REPO = 'https://github.com/arthuralvim/{{ cookiecutter.repo_name }}.git'
 VENV = os.environ.get('WORKON_HOME', '~/.virtualenvs/')
 PRO = os.environ.get('PROJECT_HOME', '~/projects/')
 
@@ -83,11 +83,11 @@ def after_install(options, home_dir):
     # install requirements.txt
     subprocess.call([PIP, 'install', '-r', 'requirements.txt'])
     # run syncdb
-    subprocess.call([PY, 'manage.py', 'syncdb', '--all', '--noinput', '--settings={{ project_name }}.settings.dev'])
+    subprocess.call([PY, 'manage.py', 'syncdb', '--all', '--noinput', '--settings={{ cookiecutter.repo_name }}.settings.dev'])
     # run migrate
-    subprocess.call([PY, 'manage.py', 'migrate', '--settings={{ project_name }}.settings.dev'])
+    subprocess.call([PY, 'manage.py', 'migrate', '--settings={{ cookiecutter.repo_name }}.settings.dev'])
     # run collectstatic
-    subprocess.call([PY, 'manage.py', 'collectstatic', '--clear', '--noinput', '--settings={{ project_name }}.settings.dev'])
+    subprocess.call([PY, 'manage.py', 'collectstatic', '--clear', '--noinput', '--settings={{ cookiecutter.repo_name }}.settings.dev'])
 
     print "Now run the server => python manage.py runserver or run heroku's foreman."
 
