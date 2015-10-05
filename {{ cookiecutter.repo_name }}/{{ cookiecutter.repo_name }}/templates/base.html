@@ -1,12 +1,13 @@
+{% raw %}
 <!DOCTYPE html>
 <html lang="en" class="no-js">
     <head>
-        <title>{% block title %} {{ cookiecutter.repo_name }} {% endblock title %}</title>
+        <title>{% block title %} {% endraw %}{{ cookiecutter.repo_name }}{% raw %} {% endblock title %}</title>
         <meta charset="utf-8">
-        <meta name="author" content="{{ cookiecutter.repo_name }}">
-        <meta name="copyright" content="{{ cookiecutter.repo_name }}">
-        <meta name="description" content="{{ cookiecutter.repo_name }}">
-        <meta name="keywords" content="{{ cookiecutter.repo_name }}">
+        <meta name="author" content="{% endraw %}{{ cookiecutter.repo_name }}{% raw %}">
+        <meta name="copyright" content="{% endraw %}{{ cookiecutter.repo_name }}{% raw %}">
+        <meta name="description" content="{% endraw %}{{ cookiecutter.repo_name }}{% raw %}">
+        <meta name="keywords" content="{% endraw %}{{ cookiecutter.repo_name }}{% raw %}">
         <meta name="robots" content="index, follow">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         {% block extra_meta %} {% endblock extra_meta %}
@@ -24,3 +25,4 @@
     {% block tracking %} {% endblock tracking %}
   </body>
 </html>
+{% endraw %}
