@@ -1,5 +1,4 @@
-{% raw %}
-{% load bootstrap3 %}
+{% raw %}{% load bootstrap3 %}
 
 {%  bootstrap_field field addon_before="R$" %}
 
@@ -7,5 +6,4 @@
   $(function() {
     $("#{{ id }}").attr("type", "text").mask("#.##0,00", {reverse: true});
   });
-</script>
-{% endraw %}
+</script>{% endraw %}

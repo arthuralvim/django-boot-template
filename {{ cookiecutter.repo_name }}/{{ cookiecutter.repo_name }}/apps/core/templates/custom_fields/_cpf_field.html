@@ -1,10 +1,8 @@
-{% raw %}
-{% load bootstrap3 %}
+{% raw %}{% load bootstrap3 %}
 
 {%  bootstrap_field field  %}
 <script type="text/javascript">
   $(function() {
     $("#{{ id }}").mask("000.000.000-00");
   });
-</script>
-{% endraw %}
+</script>{% endraw %}

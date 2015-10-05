@@ -1,5 +1,4 @@
-{% raw %}
-<ul class="pagination pagination-lg">
+{% raw %}<ul class="pagination pagination-lg">
     {% if has_previous %}
         {% if querystr %}
         <li><a href="?{{ querystr }}&page={{ paged.previous_page_number }}">&lsaquo;&lsaquo;</a></li>
@@ -45,5 +44,4 @@
     {% else %}
         <li class="disabled"><a href="#">&rsaquo;&rsaquo;</a></li>
     {% endif %}
-</ul>
-{% endraw %}
+</ul>{% endraw %}
